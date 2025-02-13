@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,8 +31,11 @@ public class DatingAppBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		profileRepository.deleteAll();
+		conversationRepository.deleteAll();
+
 		Profile profile = new Profile(
-				UUID.randomUUID(),
+				"1",
 				"eva88",
 				40,
 				Gender.FEMALE,
@@ -47,7 +48,7 @@ public class DatingAppBackendApplication implements CommandLineRunner {
 		profileRepository.findAll().forEach(System.out::println);
 
 		Conversation conversation = new Conversation(
-				1L,
+				"1",
 				profile.id(),
 				List.of(
 						new ChatMessage(
@@ -56,11 +57,11 @@ public class DatingAppBackendApplication implements CommandLineRunner {
 						),
 						new ChatMessage(
 								LocalDateTime.now(),
-								"Hope to hear from you soon."
+								"Hope to hear from you soon. bye"
 						)
 				)
 		);
 		conversationRepository.save(conversation);
-		System.out.println(conversationRepository.findAll());
+		conversationRepository.findAll().forEach(System.out::println);
 	}
 }
