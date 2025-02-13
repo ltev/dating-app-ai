@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 public class DatingAppBackendApplication implements CommandLineRunner {
@@ -34,7 +33,7 @@ public class DatingAppBackendApplication implements CommandLineRunner {
 		profileRepository.deleteAll();
 		conversationRepository.deleteAll();
 
-		Profile profile = new Profile(
+		Profile profile1 = new Profile(
 				"1",
 				"eva88",
 				40,
@@ -44,18 +43,32 @@ public class DatingAppBackendApplication implements CommandLineRunner {
 				"eva88.jpg",
 				"not sure"
 		);
-		profileRepository.save(profile);
+		profileRepository.save(profile1);
+		Profile profile2 = new Profile(
+				"2",
+				"dave90",
+				40,
+				Gender.MALE,
+				"Indian",
+				"hard worker all the time",
+				"dave.jpg",
+				"eager"
+		);
+		profileRepository.save(profile2);
+
 		profileRepository.findAll().forEach(System.out::println);
 
 		Conversation conversation = new Conversation(
 				"1",
-				profile.id(),
+				new String[] {profile1.id(), profile2.id()},
 				List.of(
 						new ChatMessage(
+								"1",
 								LocalDateTime.now(),
 								"How are you doing?"
 						),
 						new ChatMessage(
+								"1",
 								LocalDateTime.now(),
 								"Hope to hear from you soon. bye"
 						)
