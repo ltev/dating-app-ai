@@ -25,7 +25,7 @@ public class ConversationController {
 
     @PostMapping
     public Conversation createNewConversation(@RequestBody CreateConversationRequest request) {
-        if (request.profilesId() == null || request.profilesId.length != 2 || request.profilesId()[0] == request.profilesId()[1]) {
+        if (request.profilesId() == null || request.profilesId.length != 2 || request.profilesId()[0].equals(request.profilesId()[1])) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid profileId");
         }
         profileRepository.findById(request.profilesId[0])
@@ -58,5 +58,11 @@ public class ConversationController {
 
         log.info("New message = " + newMessage);
         return conversationRepository.save(conversation);
+    }
+
+    @GetMapping("/{conversationId}")
+    public Conversation getConversation(@PathVariable String conversationId) {
+        return conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid conversationId"));
     }
 }
